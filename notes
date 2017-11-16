@@ -1,0 +1,94 @@
+*Aracihazlara Saat ve Tarih Bilgilerinin Verilmesi
+
+	#enable
+	#clock set hh:mm::ss 31 OCTOBER 2017
+
+
+
+*Cihaz Güvenliğini Sağlamaya Yönelik Konfigürasyon
+
+	a.Enable Moda Geçiş İçin Password Tanımlanması:
+	
+		#enable password cisco123 ya da enable secret cisco123
+	
+
+	*Aralarındaki fark ; secret kodu ile verilen parolar encrypte edilir.
+	
+	**Not: “#enable secret cisco1234” komutu verilme sırasına bakmaksızın diğerini eziyor.
+
+	* CTRL+ALT+6 → Devam eden işlemi kesmek için kullanılır.
+
+
+*Switch İçin TELNET Yapılandırması 
+
+	*Aşağıdaki komutlar kullanılarak arayüzlerin tümüne(16 adet) password verebiliyoruz.
+
+		#line vty 0 15
+		#password cisco1234
+		#login
+
+	
+	*Alternatif Telnet Yapılandırması (username isteyen giriş) ; 
+
+		#username admin password cisco
+		#line vty 0 15
+		#login local
+
+
+*Switch Cihazı için Yönetim IP’si Verilmesi;
+
+	#interface VLAN 1
+	#ip address 192.168.1.2 255.255.255.192
+	#no shutdown
+
+*Switch Cihazı için DGW IP’si Verilmesi;
+	
+	# conf t
+	#ip default-gateway 192.168.1.1
+	#end
+
+
+*Konfigürasyon Dosyasının Kaydedilmesi;
+
+	# copy running-config startup-config
+
+
+
+*Router Konfigürasyonu
+
+
+	*Alternatif Telnet Yapılandırması ;
+
+		# username kaan password cisco1234
+		#line vty 0 15
+		#login local
+		#exit
+
+
+	*Router ‘ bacaklarına IP Adresi tanımalaması ; 
+
+		# interface gig0/0
+		#ip address 192.168.2.1 255.255.255.0
+		#no shutdown
+		#end
+
+
+*Kontrol Komutları ;
+
+ Router İçin ;
+
+	Router# show ip interface brief 
+	Router# show ip route (Yönlendirme Tablosu)
+	Router# show running-config (RAM'de çalışan konf. dosyası)
+	Router# show startup-config (NVRAM'e kaydedilen başlangıç konf. dosyası)
+	
+	Router# show flash: (Flash bellekte tutulan işletim sistemi
+
+ Switch için;
+
+	#show mac address-table
+
+
+
+
+
