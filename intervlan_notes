@@ -1,0 +1,38 @@
+INTERVLAN KONFİGÜRASYON NOTLARI
+
+
+Farklı vlan’lara ait cihazların birbirleriyle haberleşmesidir.iki çeşittir -> Legacy(geleneksel) ve Router on a stick
+Legacy : switch ile router arasında iki adet interface bulunur(Switch-Router bağlantısı access olmalıdır.)
+Router on a stick  : arada tek kablo vardır ve tüm vlanlar buradan geçiş yapar(Switch – Router bağlantısı TRUNK mode yapılamlıdır.)
+
+
+*LEGACY VLAN NOTLAR
+
+Switch Üzerinde bulunan portları daha önceden belirlenmiş olan VLAN lara ataması yapılarak bu inter-vlan şekli konfigüre edilebilir.
+
+*ROUTER ON A STİCK NOTLAR
+
+Not : Bu yöntemde router ile switch arasındaki port TRUNK olarak belirlenir(Birden fazla etiketli vlan paketi geçiş yapacağı için)
+
+Bu yöntemde router üzerindeki interface üzerine subinterface'ler tanımalanacaktır.(e0.1,e0.2 vb.) ; 
+
+
+*Router üzerinde Subinterface Tanımlama :
+
+	#interface gig0/0
+	#no shut
+	#interface gig0/0.1
+	#encapsulation dot1.q 1   		---> Hangi Vlan için gateway olduğunu belirtmiş olduk (1 Nolu VLAN için)
+	#ip address 10.0.0.2 255.255.255.0	---> Gateway için IP Adresi Tanımlandı 
+	
+	
+
+	#interface gig0/0.2
+	#encapsulation dot1.q 2  		---> Hangi Vlan için gateway olduğunu belirtmiş olduk (1 Nolu VLAN için)
+	#ip address 20.0.0.2 255.255.255.0	---> Gateway için IP Adresi Tanımlandı 
+
+
+
+
+
+
