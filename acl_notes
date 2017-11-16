@@ -1,0 +1,121 @@
+ACCESS CONTROL LİST (ERİŞİM DENETİM LİSTELERİ) KONFİGÜRASYON NOTLARI 
+
+NOT:Standart ACL'ler genellikle hedef IP'ye en yakın noktaya tanımlanır.
+
+*ACL Oluşturulması ;
+
+	#access list 1 permit 192.168.30.0 0.0.0.0 (*WildcardMask Mevcut SM ile karıştırma!!)
+
+
+*Access List'in İnterface'a Uygulanması :
+
+	#interface serial 0/0/0
+	#ip access-group 1 out
+
+
+*İsimli ACL Kullanımı:
+
+	a.İsimli ACL Oluşturma:
+
+		#ip access list standard VIRUSLU_KULLANICI
+			#deny host 192.168.10.10
+			#permit any
+
+	
+	b.İsimli ACL Uygulanması : 
+	
+		#interface serial 0/0/0
+		#ip access-group VIRUSLU KULLANICI out
+
+
+*ACL İçine Giriş Yapma:
+	
+	#ip access-list standart 1 --> Komutu ile giriş yapılabilir.
+	
+
+	Not:Bu alandayken satır numarası belirleyerek ACE girişi yapılabilir.
+	
+		#32 permit ...... --> Şeklinde
+
+
+
+*ACL Kullanışlı Komutlar:
+
+  #show access-list
+
+  #no access list 10 (Silmek için)
+
+  #access list 10 remark VIRUSLU_KULLANICI (Not yazmak için)
+ 
+  #clear access-list counters 1 (Şimdiye kadar belirtilen ACL'ye takılan paket sayısını temizler)
+
+
+
+*ROUTER ERİŞİM GÜVENLİĞİ 
+
+Router'a olan erişimi sadece SSH ile sınırlandırıyoruz ve bu erişimide ACL ile denetim altına alıyoruz.
+
+
+	#username admin password cisco
+	#line vty 0 4
+	#login local
+	#transport input ssh         --> Eğer hem telnet hem ssh istiyor ise : #transport input all komutu kullanılabilir.
+	#access-class 21 in
+	#exit
+
+	#access list 21 permit 192.168.10.0 0.0.0.255
+	#access list deny any
+
+
+LAB ÖRNEĞİ ; 
+
+	hostname R1
+	ip domain-nam 
+	username ABC password cisco
+	ip domain-name ayd.org.tr
+	crypto key generate rsa
+    	[How many bits 512?] 1024
+	line vty 0 15
+  	login local
+  	ransport input ssh
+
+
+
+** SSH İLE BAĞLANTI KURMAK;
+	
+Not:SSH Ve TELNET üzerinden konfigürasyon yapmak için "line vty 0 15" arayüzü üzerinde işlem yapmak gereklidir.
+
+	
+	#transport input ssh / #transport input telnet / #transport input all  
+	
+	komutları kullanılarak bu erişim yöntemleri sınırlandırılabilir.ayrıca bu erişim yöntemlerine erişimide ACL'ler ile sınırlandırabiliriz.
+
+	
+	örnek : 
+
+	*router üzerinde acl oluşturulması ;
+		
+		#ip access-list standard VIRUSLU_KULLANICI
+			#deny host 192.168.2.100
+			#permit any
+
+	* ACL'nin VTY arayüzüne uygulanması;
+		
+		#line vty 0 15
+		#access class VTY İN/OUT
+
+
+Konfigürasyonu ile ilgili router'a uzaktan erişim sağlayabilecek veya sağlayamayacak ip'leri tanımlayabiliriz.
+
+
+	
+	
+
+
+
+
+
+
+
+
+
