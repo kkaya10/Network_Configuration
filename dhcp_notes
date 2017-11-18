@@ -1,0 +1,65 @@
+DHCP NOTLAR
+
+
+*DHCP IPV4 için Router Üzerinde Konfigürasyon İşlemi (ROUTER-->PC IPV4 Atanması)
+
+  Router Trafı;
+
+	#ip dhcp pool HAVUZ				--> HAVUZ isminde bir dhcp pool oluşturuldu.
+	#network 192.168.1.0 255.255.255.0		--> İşlem yapılacak IP aralığı belirtildi.
+	#default router 192.168.1.1			--> GW Adresi belirtildi.
+	#dns-server 192.168.3.10			--> DNS server adresi belirtildi.
+	#domain name example.com			--> Domain ismi belirtildi.
+	#end
+
+
+	*Belirli bir IP ya da IP Aralığını dhcp hizmeti dışında tutmak için ;
+
+	#ip dhcp excluded-address 192.168.10.1 192.168.10.9
+
+	*Bu işlemlerden sonra ilgili pc 'yi dhcp 'den İP alacak şekilde ayarlarsak otomatik olarak IP adresini alıcaktır.
+
+
+
+
+
+*İki ROUTER Cihazından birisinin DHCP Hizmeti Verecek diğerinin ise DHCP Hizmeti Alacak Şekilde Konfigüre Edilmesi
+
+
+
+
+	Hizmet Verecek Router ; 
+
+		#ip dhcp pool HAVUZ
+		#network 192.168.10.0 255.255.255.0
+		#default router 192.168.10.1
+		#dns-server 8.8.8.8
+		#end
+
+	Hizmet Alacak Router ; 
+
+	İlgili interface içine girildikten sonra;
+
+		#ip address dhcp
+		#no shut
+
+
+*RELAY SUNUCU MANTIĞI ;
+
+  Router clientlardan gelecek olan dhcp broadcast isteklerini unicast mesaja çevirip DHCP Server'a ulaştıracak ve dönen 
+  mesajı tekrar client'a iletecektir.Relay Agent denir.
+
+  
+ 	*Bu durumda #ip helper-address 192.168.6.7 şeklinde bir komut kullanılacaktır.
+  	 Ancak bu komutun çalıştırılacağı yer çok önemlidir ; DHCP hizmeti verilecek olan client'ların altında
+ 	 bulunduğu interface üzerinde bu komut işletilecektir.
+
+
+
+
+
+
+
+
+
+
