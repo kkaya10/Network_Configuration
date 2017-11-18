@@ -1,0 +1,65 @@
+NAT KONFİGÜRASYON NOTLARI;
+
+STATİK NAT(Birebir Eşleştirme);
+
+
+	#ip nat inside source static (local-iç ip) (global-dış ip)
+	#interface fa0/0
+	#ip nat inside
+	#interface se0/0/0
+	#ip nat outside
+
+
+PORT FORWARDİNG
+
+	#ip nat inside source static tcp 192.168.10.254 80(iç) 209.165.200.225 8080(dış)  
+	#interface fa0/0
+	#ip nat inside
+	#interface se0/0/0
+	#ip nat outside
+
+
+DİNAMİK NAT (HAVUZ BELİRLENİR)
+
+
+	#ip nat pool HAVUZ 209.165.200.226 209.165.200.240 255.255.255.0(netmask) --> ISP 'nin verdiği kullanabileceğimiz Public IP Havuzu
+	#access-list 1 permit 192.168.0.0 0.0.255.255 				  --> Bu ACL'ye uyan bir İP gelirse NAT'a sok demektir.
+	#ip nat inside source list 1 pool HAVUZ
+	#interface fa0/0
+	#ip nat inside
+	#interface se0/0/0
+	#ip nat outside
+
+
+
+PAT(NAT OVERLOAD) KONFİGÜRASYONU ;
+
+Bu yöntemde iç ağdan çıkan tüm paketler dışarıda tek bir IP ya da IP grubu üzerine overload yapılarak aktarılır.
+Port numarası ile ayrım sağlanır.
+
+	
+  #access-list 1 permit 192.168.10.0 255.255.255.0    		--> NAT'lanacak Private IP adresi veya grubu belirlenir.
+  #ip nat inside source list 1 interface serial 0/3/0 overload  --> İçeriden gelen ve NAT'lanan IP 'lerin hangi interface
+								    üzerine bindirileceği belirlenir.
+  #interface fa0/0						--> İç ağ belirtilir
+  #ip nat inside
+
+  #interface serial 0/3/0					--> Dış ağ belirtilir.
+  #ip nat outside
+
+
+	
+
+
+KONTROL KOMUTLARI ;
+
+	#show ip nat translations
+	#show ip nat translation verbase
+	#clear ip at statistics
+	#clear ip nat translations 	--> NAT tablosunu siler
+
+
+
+
+
+
