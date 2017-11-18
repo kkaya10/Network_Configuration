@@ -1,0 +1,104 @@
+DEVİCE DİSCOVERY AND MANAGEMENT
+
+*Cisco Discovery Protocol Komutları: (CDP Advertisement Mesajı 60 saniyede bir yollanır.)
+
+	#cdp run  	/ no cdp run
+	#cdp enable 	/ no cdp enable
+	
+	#show cdp neighbors	
+	#show cdp interface
+	#show cdp neighbors details
+
+
+
+*LLDP Komutları :  (LLDP Advertisement mesajı 30 saniyede bir yollanır.)
+
+	
+	#lldp run
+	#lldp transmit  --> Yolla
+	#lldp receive   --> Al
+	#show lldp 
+	#show lldp neighbors
+
+
+*Network Time Protocol Komutları : Cihazlara Time bilgisini doğru öğretmek için kullanılır. 
+
+
+	#ntp server "ip address"
+	#show ntp association
+	#show ntp status
+	#show clock
+
+	#ntp master --> Cihazın sunucu olması için
+
+
+*Syslog : Log takibi için kullanılan protokoldür.(0-7 arası derecelendirmeye sahiptirler.)
+
+	#service timestamp log datetime     --> Log takibi kolaylasır(zaman belirtiyor) = cihaz açıldıktan ne kadar sonra log atıldığı belirtilir.
+
+	#show logging			    --> Ram'deki loglar görüntülenir.
+	
+	#logging ip address  		    --> Logları buraya yolla demektir.
+
+	#logging trap level		    --> "#loggin trap 4" komutuile ; 0-4 arası seviyedeki loglar görüntülenir
+ 
+	#loggin source interface "int_num"  --> logların sunucuya yollanacağı interface belirlenir.
+
+
+* Device Maintenance : 
+
+	* dir/pwd/cd komutları kullanılabilir.
+	
+	*KONFİGÜRASYON YEDEKLEME:
+			
+		*tftp = ücretsiz ftp
+
+		#copy running-config tftp
+		#copy startup-config tftp
+	
+	*.bin işletim sistemidir
+	
+	# boot system flash flash:deneme.bin --> boot sırası değiştirme
+
+	
+
+
+
+* CİSCO CİHAZ - ŞİFRE KIRMA : 
+
+	* Cihaz aç kapa yapılır aynı esnada CLI ekranında CTRL+C kombinasyonu kullanılır. (Hızlı şekilde)
+
+		"rommon 1 > " taımlayıcısı ekranda belirir.
+		
+			#confreg 0x2142
+			#boot
+		
+			------------------------- > Yukarıdaki iki satır ile cihazı boş açtırmış oluyoruz.
+			------------------------- > Cihaz Açıldı ; 
+
+			#copy startup-config running-config
+	
+			------------------------- > Artık şifreyi değiştirebiliriz.
+			
+			#enable secret cisco123
+
+			------------------------- > Son olarak aşağıdaki kod uygulanmalıdır;
+
+			#config register 0x2102 
+
+			
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
